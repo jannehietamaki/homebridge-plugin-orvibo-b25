@@ -47,6 +47,6 @@ export class OrviboB25PlatformAccessory {
     // {"uid":"807d3a1aefee","order": "open", "value1": 0}
     // {"uid":"807d3a1aefee","order": "stop", "value1": 100}
     this.platform.log.info('Triggered GET handleTargetPositionSet', value, this.accessory.context.device);
-    this.orvibo.sendOrder(this.accessory.context.device.uid, 'open', { value1: value });
+    this.orvibo.sendOrder(this.accessory.context.device.uid, 'open', { value1: 100 - value });
   }
 }

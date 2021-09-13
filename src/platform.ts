@@ -62,7 +62,7 @@ export class OrviboB25HomebridgePlatform implements DynamicPlatformPlugin {
       const acc = this.accessories.find(accessory => accessory.UUID === uuid);
       if (acc) {
         for(const service of acc.services) {
-          service.updateCharacteristic(this.Characteristic.CurrentPosition, data.state);
+          service.updateCharacteristic(this.Characteristic.CurrentPosition, 100 - data.state);
         }
       }
     });
