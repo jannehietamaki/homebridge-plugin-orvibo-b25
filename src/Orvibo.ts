@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 import { createServer, Socket, Server } from 'net';
 import { Packet } from './OrviboPacket';
 import { EventEmitter } from 'events';
@@ -48,10 +50,6 @@ export class Orvibo extends EventEmitter {
     private plugConnections: ServerSocket[] = [];
     private packetData: Map<string, SocketData> = new Map<string, SocketData>();
 
-    private getNameForUid(uid) {
-      return 'unknown';
-    }
-
     private getData(id): SocketData {
       return this.packetData[id];
     }
@@ -81,7 +79,7 @@ export class Orvibo extends EventEmitter {
       const pkData = Object.assign({}, socketData, {
         serial: plugPacket.getSerial(),
         uid,
-        name: this.getNameForUid(uid),
+        name: 'unknown',
       });
       this.respondAndSetData(pkData, socket, PacketBuilder.handshakePacket);
       this.logger.log(`Connected ${pkData.uid} name = ${pkData.name}`);
@@ -133,7 +131,6 @@ export class Orvibo extends EventEmitter {
     }
 
     startServer() {
-      const self = this;
       const handlers = this.handlers();
 
       this.logger.log(`Starting server Orvibo socket server on port ${this.port}`);
@@ -168,7 +165,7 @@ export class Orvibo extends EventEmitter {
           this.LOG_PACKET && plugPacket.logPacket('Socket -> ');
 
           const handler = handlers[plugPacket.getCommand()];
-          if (handler != null) {
+          if (handler !== null) {
             handler(plugPacket, socket, socketData);
           } else {
             handlers[UNKNOWN_CMD](plugPacket, socket, socketData);
@@ -180,14 +177,14 @@ export class Orvibo extends EventEmitter {
           if (pkData) {
             this.logger.log(`Plug ${pkData.uid} - ${pkData.name} disconnected`);
           }
-          self.emit('plugDisconnected', {uid: pkData.uid, name: pkData.name});
+          this.emit('plugDisconnected', {uid: pkData.uid, name: pkData.name});
           this.plugConnections.splice(this.plugConnections.indexOf(socket), 1);
         });
 
         socket.on('error', (err) => {
           this.logger.log(err);
           this.logger.log(`Plug ${socket.id} - ${socket.name} disconnected with error`);
-          self.emit('plugDisconnectedWithError', this.getData(socket.id));
+          this.emit('plugDisconnectedWithError', this.getData(socket.id));
           this.plugConnections.splice(this.plugConnections.indexOf(socket), 1);
         });
 
@@ -210,7 +207,7 @@ export class Orvibo extends EventEmitter {
         return;
       }
       const socket = this.plugConnections.find(s => s.id === socketId);
-      if (socket != null) {
+      if (socket) {
         const socketData = this.getData(socketId);
         const data = Object.assign({}, socketData, {
           order,

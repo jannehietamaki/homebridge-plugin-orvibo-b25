@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires  */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 const crc32 = require('buffer-crc32');
 const crypto = require('crypto');
 
