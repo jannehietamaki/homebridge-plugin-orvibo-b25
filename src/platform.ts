@@ -36,7 +36,7 @@ export class OrviboB25HomebridgePlatform implements DynamicPlatformPlugin {
 
   discoverDevices() {
     this.orvibo.on('plugConnected', (data) => {
-      this.log.debug('Triggering plugConnected:', data);
+      this.log.info('Triggering plugConnected:', data);
       const uuid = this.api.hap.uuid.generate(data.uid);
       const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
 
@@ -50,6 +50,7 @@ export class OrviboB25HomebridgePlatform implements DynamicPlatformPlugin {
         new OrviboB25PlatformAccessory(this, accessory, this.orvibo);
         // { uid: '807d3a1aefee', name: 'unknown' }
         accessory.getService(this.Service.AccessoryInformation)!.setCharacteristic(this.Characteristic.SerialNumber, data.uid);
+        accessory.getService(this.Service.AccessoryInformation)!.setCharacteristic(this.Characteristic.Name, data.name);
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
       }
     });

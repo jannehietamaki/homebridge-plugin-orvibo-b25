@@ -46,9 +46,7 @@ export class OrviboB25PlatformAccessory {
     // {"uid":"807d3a1aefee","order": "close", "value1": 100}
     // {"uid":"807d3a1aefee","order": "open", "value1": 0}
     // {"uid":"807d3a1aefee","order": "stop", "value1": 100}
-    this.platform.log.info('Triggered SET TargetPosition:', value);
-    const uid = this.accessory.getService(this.platform.Service.AccessoryInformation)!.getCharacteristic(this.platform.Characteristic.SerialNumber);
-    this.platform.log.info('Triggered GET handleTargetPositionSet', value, uid);
-    this.orvibo.sendOrder(uid, 'open', { value1: value });
+    this.platform.log.info('Triggered GET handleTargetPositionSet', value, this.accessory.context.device);
+    this.orvibo.sendOrder(this.accessory.context.device.uid, 'open', { value1: value });
   }
 }
