@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "OrviboB25HomebridgePlugin",
   "pluginType": "platform",
   "singular": true,
   "schema": {

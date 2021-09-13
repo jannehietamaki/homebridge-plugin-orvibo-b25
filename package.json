@@ -1,16 +1,16 @@
 {
   "private": true,
-  "displayName": "Plugin Name",
-  "name": "homebridge-plugin-name",
+  "displayName": "Homebridge Orbivo b25 plugin",
+  "name": "homebridge-plugin-orvibo-b25",
   "version": "1.0.0",
-  "description": "A short description about what your plugin does.",
+  "description": "Orbivo b25 plugin for Homebridge",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/USERNAME/GITHUB_PROJECT_NAME.git"
+    "url": "git://github.com/jannehietamaki/homebridge-plugin-orvibo-b25.git"
   },
   "bugs": {
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME/issues"
+    "url": "git://github.com/jannehietamaki/homebridge-plugin-orvibo-b25/issues"
   },
   "engines": {
     "node": ">=12.13.0",
@@ -36,6 +36,7 @@
     "nodemon": "^2.0.7",
     "rimraf": "^3.0.2",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.2"
+    "typescript": "^4.2.2",
+    "buffer-crc32": "^0.2.13"
   }
 }
