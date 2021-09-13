@@ -5,9 +5,6 @@ import { OrviboB25HomebridgePlatform } from './platform';
 export class OrviboB25PlatformAccessory {
   private service: Service;
 
-  private value1 = 0;
-  private targetValue = 0;
-
   constructor(
     private readonly platform: OrviboB25HomebridgePlatform,
     private readonly accessory: PlatformAccessory,
@@ -21,16 +18,16 @@ export class OrviboB25PlatformAccessory {
     this.service = this.accessory.getService(platform.Service.WindowCovering) || this.accessory.addService(this.platform.Service.WindowCovering);
 
     this.service.setCharacteristic(platform.Characteristic.Name, accessory.context.device.exampleDisplayName);
-    this.service.getCharacteristic(platform.Characteristic.CurrentPosition).onGet(this.handleCurrentPositionGet.bind(this));
+    // this.service.getCharacteristic(platform.Characteristic.CurrentPosition).onGet(this.handleCurrentPositionGet.bind(this));
 
-    this.service.getCharacteristic(platform.Characteristic.PositionState).onGet(this.handlePositionStateGet.bind(this));
+    // this.service.getCharacteristic(platform.Characteristic.PositionState).onGet(this.handlePositionStateGet.bind(this));
 
     this.service.getCharacteristic(platform.Characteristic.TargetPosition)
-      .onGet(this.handleTargetPositionGet.bind(this))
+      // .onGet(this.handleTargetPositionGet.bind(this))
       .onSet(this.handleTargetPositionSet.bind(this));
 
   }
-
+  /*
   handleCurrentPositionGet() {
     this.platform.log.debug('Triggered GET PositionState', this.value1);
     return this.value1;
@@ -45,12 +42,11 @@ export class OrviboB25PlatformAccessory {
     this.platform.log.debug('Triggered GET TargetPosition', this.targetValue);
     return this.targetValue;
   }
-
+  */
   handleTargetPositionSet(value) {
     // {"uid":"807d3a1aefee","order": "close", "value1": 100}
     // {"uid":"807d3a1aefee","order": "open", "value1": 0}
     // {"uid":"807d3a1aefee","order": "stop", "value1": 100}
-    this.targetValue = value;
     this.platform.log.debug('Triggered SET TargetPosition:', value);
     const uid = this.accessory.getService(this.platform.Service.AccessoryInformation)!.getCharacteristic(this.platform.Characteristic.SerialNumber);
     this.orvibo.sendOrder(uid, 'open', { value1: value });
