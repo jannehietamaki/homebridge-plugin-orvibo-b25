@@ -54,17 +54,20 @@ export class Packet {
     }
 
     validCRC() {
-      return crc32(this.payload).toString() === this.crc32.toString();
+      // @ts-ignore
+      return crc32(this.payload).toString('hex') === this.crc32.toString('hex');
     }
 
     packetTypeText() {
-      return this.packetType.toString();
+      // @ts-ignore
+      return this.packetType.toString('ascii');
     }
 
     decodeJSON(key) {
       const decipher = crypto.createDecipheriv('aes-128-ecb', key, '');
       decipher.setAutoPadding(true);
-      let decrypted = decipher.update(this.payload.toString(), 'hex', 'utf8');
+      // @ts-ignore
+      let decrypted = decipher.update(this.payload.toString('hex'), 'hex', 'utf8');
       decrypted += decipher.final('utf8');
       // Sometimes there are bad chars on the end of the JSON so check here
       decrypted = decrypted.substring(0, decrypted.indexOf('}') + 1);
