@@ -92,7 +92,7 @@ export class Orvibo extends EventEmitter {
         uid: plugPacket.getUid(),
       });
       this.respondAndSetData(pkData, socket, PacketBuilder.heartbeatPacket);
-      this.logger.log(`Plug ${pkData.name} ${pkData.uid} sent heartbeat`);
+      // this.logger.log(`Plug ${pkData.name} ${pkData.uid} sent heartbeat`);
       this.emit('gotHeartbeat', {uid:pkData.uid, name: pkData.name});
     }
 
@@ -225,7 +225,7 @@ export class Orvibo extends EventEmitter {
         const packet = PacketBuilder.updatePacket(data);
         socket.write(packet);
       } else {
-        this.logger.log('Can not find socket ');
+        this.logger.log('Can not find socket', socketId, this.plugConnections);
       }
     }
 
