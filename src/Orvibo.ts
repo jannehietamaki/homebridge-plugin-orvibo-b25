@@ -206,7 +206,12 @@ export class Orvibo extends EventEmitter {
         this.logger.log('Could not find socket ' + uid);
         return;
       }
-      const socket = this.plugConnections.find(s => s.id === socketId);
+      let socket = this.plugConnections.find(s => s.id === socketId);
+      if (!socket) {
+        this.logger.log('Can not find expected socket. Using first one if available.', socketId, uid, this.plugConnections, this.packetData);
+        socket = this.plugConnections.length > 0 ? this.plugConnections[0] : undefined;
+      }
+
       if (socket) {
         const socketData = this.getData(socketId);
         const data = Object.assign({}, socketData, {
@@ -225,7 +230,7 @@ export class Orvibo extends EventEmitter {
         const packet = PacketBuilder.updatePacket(data);
         socket.write(packet);
       } else {
-        this.logger.log('Can not find socket', socketId, this.plugConnections);
+        this.logger.log('Can not find socket', socketId, uid, this.plugConnections, this.packetData);
       }
     }
 
