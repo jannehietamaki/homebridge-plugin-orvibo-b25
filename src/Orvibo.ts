@@ -178,14 +178,16 @@ export class Orvibo extends EventEmitter {
             this.logger.log(`Plug ${pkData.uid} - ${pkData.name} disconnected`);
           }
           this.emit('plugDisconnected', {uid: pkData.uid, name: pkData.name});
-          this.plugConnections.splice(this.plugConnections.indexOf(socket), 1);
+          this.plugConnections = this.plugConnections.filter(s => s.id !== socket.id);
+          this.logger.log(`Remaining sockets`, this.plugConnections.map(x => x.id));
         });
 
         socket.on('error', (err) => {
           this.logger.log(err);
           this.logger.log(`Plug ${socket.id} - ${socket.name} disconnected with error`);
           this.emit('plugDisconnectedWithError', this.getData(socket.id));
-          this.plugConnections.splice(this.plugConnections.indexOf(socket), 1);
+          this.plugConnections = this.plugConnections.filter(s => s.id !== socket.id);
+          this.logger.log(`Remaining sockets`, this.plugConnections.map(x => x.id));
         });
 
       });
@@ -208,8 +210,8 @@ export class Orvibo extends EventEmitter {
       }
       let socket = this.plugConnections.find(s => s.id === socketId);
       if (!socket) {
-        this.logger.log('Can not find expected socket. Using first one if available.', socketId, uid, this.plugConnections, this.packetData);
-        socket = this.plugConnections.length > 0 ? this.plugConnections[0] : undefined;
+        this.logger.log('Can not find expected socket. Using latest one if available.', socketId, uid, this.plugConnections, this.packetData);
+        socket = this.plugConnections.length > 0 ? this.plugConnections[this.plugConnections.length - 1] : undefined;
       }
 
       if (socket) {
